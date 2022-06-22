@@ -11,11 +11,14 @@ def cria_professor(professor: dict) -> Professor:
         return None
     return new_professor
 
+
 def consulta_professor(dicionario:dict) -> Professor:
     ...
 
+
 def deleta_professor() -> None:
     ...
+
 
 def altera_professor() -> Professor:
     ...

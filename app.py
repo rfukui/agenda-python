@@ -1,4 +1,7 @@
 from flask import Flask
+from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///:memory:', echo=True)
 
 app = Flask(__name__)
 
