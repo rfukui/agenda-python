@@ -20,7 +20,7 @@ class ProfessorSchedulle(Base):
     __tablename__ = 'agenda_professores'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    professor_id = Column(Integer, ForeignKey=Professor.id) # não está com o nome certo para marcar fk
+    professor_id = Column(Integer, ForeignKey('professores.id'))
     start_time = Column(DateTime)
     stop_time = Column(DateTime)
     week_day = Column(Integer)
