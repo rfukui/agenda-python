@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 Base = declarative_base()
@@ -10,6 +11,10 @@ class Professor(Base):
     nome = Column(String(30), nullable=False)
     disciplina = Column(String(20), nullable=False)
     modelo_trabalho = Column(String(10), nullable=False)
+
+    @property
+    def schedulles(self) -> List['ProfessorSchedulle']:
+        ...
 
     def save(self):
         ...
