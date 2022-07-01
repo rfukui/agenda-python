@@ -11,6 +11,9 @@ class Professor(Base):
     disciplina = Column(String(20), nullable=False)
     modelo_trabalho = Column(String(10), nullable=False)
 
+    def save(self):
+        ...
+
     def __repr__(self):
         return "<User(Nome='%s', Disciplina='%s', Modelo de Trabalho='%s')>" % (
             self.nome, self.disciplina, self.modelo_trabalho)

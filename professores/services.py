@@ -7,7 +7,7 @@ def cria_professor(professor: dict) -> Professor:
         return new_professor
     try:
         new_professor.save()
-    except Exception:
+    except KeyError:
         return None
     return new_professor
 
