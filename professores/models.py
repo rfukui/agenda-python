@@ -1,8 +1,9 @@
 from typing import List
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select
 from sqlalchemy import create_engine
 from .types import InputProfessor
+from dataclasses import asdict
 
 Base = declarative_base()
 engine = create_engine('sqlite:///test.db', echo=True)
@@ -44,18 +45,35 @@ class Professor(Base):
 
     @staticmethod
     def get(_id: int) -> 'Professor':
-        prof = session.query(Professor).filter(id == _id).first()
-        print(prof)
+        prof = session.query(Professor).filter(Professor.id == _id).first()
+
         return prof
 
+    def update(self, professor: dict) -> 'Professor':
+        for k, v in professor.items():
+            setattr(self, k, v)
+        return self
+
+    def delete(self) ->'Professor':
+        session.delete(self)
 
     @staticmethod
     def create(professor: InputProfessor) -> 'Professor':
         new_professor = Professor()
-        new_professor.nome=professor.nome
+        new_professor.nome = professor.nome
+        new_professor.disciplina = professor.disciplina
+        new_professor.modelo_trabalho = professor.modelo_trabalho
         session.add(new_professor)
         session.commit()
         return new_professor
+
+    def dict(self) -> dict:
+        return {
+            "id": self.id,
+            "nome": self.nome,
+            "disciplina": self.disciplina,
+            "modelo_trabalho": self.modelo_trabalho
+        }
 
 
 Base.metadata.create_all(engine)

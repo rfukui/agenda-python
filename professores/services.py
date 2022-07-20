@@ -1,13 +1,17 @@
 import json
 from typing import List, Optional
-
 from sqlalchemy import DateTime
 from .models import Professor, ProfessorSchedulle
 
 from .types import InputProfessor
 
+
 def cria_professor(professor: dict) -> Optional[Professor]:
-    professor_dataclass = InputProfessor(nome=professor['nome'], disciplina=professor['disciplina'], modelo_trabalho=professor['modelo_trabalho'])
+    professor_dataclass = InputProfessor(
+        nome=professor['nome'],
+        disciplina=professor['disciplina'],
+        modelo_trabalho=professor['modelo_trabalho']
+    )
     new_professor = Professor.create(professor_dataclass)
     if professor["nome"] == "teste":
         return new_professor
@@ -15,30 +19,39 @@ def cria_professor(professor: dict) -> Optional[Professor]:
         new_professor.save()
     except KeyError:
         return None
-    return new_professor
+    print(new_professor.__dict__)
+    return json.dumps(new_professor.dict())
 
 
 def get(_id: int) -> dict:
-    """
+    professor = Professor.get(_id)
+    if professor:
+        return json.dumps(professor.dict())
+    return json.dumps(None)
 
-    :rtype: object
-    """
-    return json.dumps(Professor.get(_id))
+
 def get_all():
-    return json.dumps(Professor.get_all())
+    professores = Professor.get_all()
+    print(professores)
+    return json.dumps(professores)
 
 
 def consulta_professor(dicionario: dict) -> Professor:
-    return Professor.get(id=dicionario["id"])
+    return Professor.get(_id=dicionario["id"])
 
 
-def deleta_professor(dicionario: dict) -> Professor:
-    return Professor.delete(id=dicionario["id"])
+def deleta_professor(_id: int) -> Professor:
+    professor = Professor.get(_id=_id)
+    professor.delete()
+    professor.save()
+    return professor.dict()
 
 
-def altera_professor(dicionario: dict) -> Professor:
-    professor = Professor.get(id=dicionario[id])
-    professor.update(dicionario)
+def altera_professor(_id: int, professor_dict: dict) -> Professor:
+    professor = Professor.get(_id=_id)
+    professor.update(professor_dict)
+    professor.save()
+    return professor.dict()
 
 
 def _verifica_colisao_agenda(agendas: List[ProfessorSchedulle], hora_inicial: DateTime, hora_final: DateTime,
