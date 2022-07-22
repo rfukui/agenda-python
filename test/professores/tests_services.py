@@ -64,7 +64,8 @@ class TestProfessorSchedulle:
         colisao_mock.return_value = True
         consulta_professor_mock.return_value = dict(professor_id=5, schedulles=[])
         prof_dict = dict(professor_id=5, start_time=datetime.now(), stop_time=datetime.now(), week_day=2)
-        services.cria_agenda_professor(prof_dict)
+
+        services.cria_agenda_professor(5, prof_dict)
         consulta_professor_mock.assert_called_once()
         schedulle_mock.create.assert_called_once()
         colisao_mock.assert_called_once()
